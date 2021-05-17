@@ -1,5 +1,5 @@
 const demand = require('must');
-const { describe, it } = require('./runner.js');
+const { describe, it, run } = require('./runner.js');
 
 describe('demo top level', () => {
   describe('demo nested', () => {
@@ -14,3 +14,5 @@ describe('demo 2', () => {
     demand('foo').to.eql('foo');
   });
 });
+
+run();

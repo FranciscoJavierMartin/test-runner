@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "must": "^0.13.4"
+    "must": "^0.13.4",
+    "uuid": "^8.3.2"
   }
 }
