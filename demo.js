@@ -11,7 +11,7 @@ describe('demo top level', () => {
 
 describe('demo 2', () => {
   it('works', () => {
-    demand('foo').to.eql('foo');
+    demand('fooo').to.eql('foo');
   });
 });
 

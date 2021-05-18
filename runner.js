@@ -21,6 +21,7 @@ emitter.on('add:suite', ({ title, handler }) => {
   handlers.set(id, {
     id,
     type: 'suite',
+    depth: stack.length,
     parent,
     children: [],
     title,
@@ -44,6 +45,7 @@ emitter.on('add:test', ({ title, handler }) => {
   handlers.set(id, {
     id,
     title,
+    depth: stack.length,
     type: 'test',
     parent,
     handler,
@@ -52,7 +54,27 @@ emitter.on('add:test', ({ title, handler }) => {
 });
 
 function run() {
-  console.log(handlers);
+  const rootSuites = Array.from(handlers).reduce((acc, curr) => {
+    return curr[1].parent === undefined ? [...acc, curr[0]] : acc;
+  }, []);
+
+  async function runSuites(ids) {
+    for (const id of ids) {
+      const suiteOrTest = handlers.get(id);
+
+      if (suiteOrTest.type === 'suite') {
+        console.log(suiteOrTest.title);
+        runSuites(suiteOrTest.children);
+      }
+
+      if (suiteOrTest.type === 'test') {
+        console.log(suiteOrTest.title);
+        suiteOrTest.handler();
+      }
+    }
+  }
+
+  runSuites(rootSuites);
 }
 
 module.exports = {
