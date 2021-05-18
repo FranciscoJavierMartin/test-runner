@@ -45,12 +45,14 @@ emitter.on('add:test', ({ title, handler }) => {
   handlers.set(id, {
     id,
     title,
+    result: {
+      pass: true,
+    },
     depth: stack.length,
     type: 'test',
     parent,
     handler,
   });
-  handler();
 });
 
 function run() {
@@ -69,7 +71,19 @@ function run() {
 
       if (suiteOrTest.type === 'test') {
         console.log(suiteOrTest.title);
-        suiteOrTest.handler();
+        try {
+          suiteOrTest.handler();
+        } catch (e) {
+          if (e.name === 'AssertionError') {
+            console.log(e.actual);
+            console.log(e.expected);
+            suiteOrTest.result = {
+              pass: false,
+              message: ` Expected: ${JSON.stringify(e.expected)}.\n
+              Actual: ${JSON.stringify(e.actual)}`,
+            };
+          }
+        }
       }
     }
   }
