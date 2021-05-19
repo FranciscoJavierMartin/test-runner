@@ -7,6 +7,9 @@ const handlers = new Map();
 
 const stack = [];
 
+const pass = '✔';
+const fail = '𐄂';
+
 function reporterDescribe(suiteOrTest) {
   const depth = '  '.repeat(suiteOrTest.depth);
   console.log(`${depth}${suiteOrTest.title}`);
@@ -14,7 +17,8 @@ function reporterDescribe(suiteOrTest) {
 
 function reporterTest(suiteOrTest) {
   const depth = '  '.repeat(suiteOrTest.depth);
-  console.log(`${depth}${suiteOrTest.title}`);
+  const symbol = suiteOrTest.result.pass ? pass : fail;
+  console.log(`${depth}${symbol} ${suiteOrTest.title}`);
 }
 
 const describe = (title, handler) => {
@@ -80,7 +84,6 @@ function run() {
       }
 
       if (suiteOrTest.type === 'test') {
-        reporterTest(suiteOrTest);
         try {
           suiteOrTest.handler();
         } catch (e) {
@@ -91,6 +94,8 @@ function run() {
               Actual: ${JSON.stringify(e.actual)}`,
             };
           }
+        } finally {
+          reporterTest(suiteOrTest);
         }
       }
     }
