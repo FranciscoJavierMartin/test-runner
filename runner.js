@@ -7,6 +7,16 @@ const handlers = new Map();
 
 const stack = [];
 
+function reporterDescribe(suiteOrTest) {
+  const depth = '  '.repeat(suiteOrTest.depth);
+  console.log(`${depth}${suiteOrTest.title}`);
+}
+
+function reporterTest(suiteOrTest) {
+  const depth = '  '.repeat(suiteOrTest.depth);
+  console.log(`${depth}${suiteOrTest.title}`);
+}
+
 const describe = (title, handler) => {
   emitter.emit('add:suite', { title, handler });
 };
@@ -65,18 +75,16 @@ function run() {
       const suiteOrTest = handlers.get(id);
 
       if (suiteOrTest.type === 'suite') {
-        console.log(suiteOrTest.title);
+        reporterDescribe(suiteOrTest);
         runSuites(suiteOrTest.children);
       }
 
       if (suiteOrTest.type === 'test') {
-        console.log(suiteOrTest.title);
+        reporterTest(suiteOrTest);
         try {
           suiteOrTest.handler();
         } catch (e) {
           if (e.name === 'AssertionError') {
-            console.log(e.actual);
-            console.log(e.expected);
             suiteOrTest.result = {
               pass: false,
               message: ` Expected: ${JSON.stringify(e.expected)}.\n
