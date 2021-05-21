@@ -13,6 +13,9 @@ const fail = chalk.red('𐄂');
 
 function reporterDescribe(suiteOrTest) {
   const depth = '  '.repeat(suiteOrTest.depth);
+  if(suiteOrTest.depth === 0){
+    console.log()
+  }
   console.log(`${depth}${suiteOrTest.title}`);
 }
 

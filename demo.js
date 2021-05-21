@@ -14,5 +14,3 @@ describe('demo 2', () => {
     demand('fooo').to.eql('foo');
   });
 });
-
-run();
