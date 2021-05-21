@@ -1,5 +1,5 @@
 const demand = require('must');
-const { describe, it, run } = require('./runner');
+const { describe, it } = require('./runner');
 
 describe('object comparison', () => {
   it('fails with property mismatch', () => {

@@ -1,5 +1,5 @@
 const demand = require('must');
-const { describe, it, run } = require('./runner.js');
+const { describe, it } = require('./runner.js');
 
 describe('demo top level', () => {
   describe('demo nested', () => {
